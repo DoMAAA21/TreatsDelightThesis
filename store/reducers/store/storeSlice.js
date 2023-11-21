@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { BACKEND_URL } from '../../../shared/constants';
-import { deleteUser } from '../user/userSlice';
+
 
 const initialState = {
   loading: false,
@@ -11,7 +11,7 @@ const initialState = {
   error: null,
 };
 
-
+const maxRetries = 3;
 export const deleteStore = createAsyncThunk('store/deleteStore', async (id, { dispatch }) => {
   try {
     const token = await AsyncStorage.getItem('token');
@@ -35,32 +35,43 @@ export const deleteStore = createAsyncThunk('store/deleteStore', async (id, { di
 }
 );
 
-export const updateStore = createAsyncThunk('store/updateStore', async ({ id, storeData }, { dispatch }) => {
-  try {
 
+export const updateStore = createAsyncThunk('store/updateStore', async (payload, { dispatch }) => {
+  const { id, storeData } = payload;
+
+  try {
+    dispatch(updateStoreRequest());
     const token = await AsyncStorage.getItem('token');
 
     if (!token) {
       dispatch(updateStoreFail('Login First'));
     }
+
     const config = {
       headers: {
-        'Content-Type': 'application/json',
+        'Content-Type': 'multipart/form-data',
         Authorization: `${token}`,
       },
     };
-    const { data } = await axios.put(`${BACKEND_URL}/api/v1/admin/store/${id}`, storeData, config);
-    dispatch(updateStoreSuccess(data.success))
-    return data.success;
+    let retryCount = 0;
+    let success = false;
 
+    while (!success && retryCount < maxRetries) {
+      try {
+        const { data } = await axios.put(`${BACKEND_URL}/api/v1/admin/store/${id}`, storeData, config);
+        dispatch(updateStoreSuccess(data.success));
+        success = true;
+        return data.success;
+      } catch (error) {
+        retryCount++;
+      }
+    }
+    dispatch(updateStoreFail('Server is Busy'))
   } catch (error) {
     dispatch(updateStoreFail(error.response.data.message))
     throw error.response.data.message;
   }
-}
-);
-
-
+});
 
 
 const storeSlice = createSlice({

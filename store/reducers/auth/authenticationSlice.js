@@ -36,17 +36,36 @@ export const login = createAsyncThunk('auth/login', async ({ email, password }, 
 
 export const logout = createAsyncThunk('auth/logout', async (_, { dispatch }) => {
   try {
-    const { data } = await axios.get(`${BACKEND_URL}/api/v1/logout`, { withCredentials: true });
+    const { data } = await axios.get(`${BACKEND_URL}/api/v1/logout`);
     await AsyncStorage.removeItem('user');
     await AsyncStorage.removeItem('token');
   
 
-    return dispatch(logoutSuccess(data.success));
+    return dispatch(logoutSuccess());
   } catch (error) {
     dispatch(logoutFail(error.response.data.message));
     throw error.response.data.message;
   }
 });
+export const verifyToken = createAsyncThunk('auth/verifyToken', async (_, { dispatch }) => {
+  try {
+
+    const token = await AsyncStorage.getItem('token');
+   
+    const response = await axios.post(`${BACKEND_URL}/api/v1/verify-token`,{token});
+    dispatch(verified(response.data))
+    console.log(response.data)
+  } catch (error) {
+    console.log(error)
+    await AsyncStorage.removeItem('user');
+    await AsyncStorage.removeItem('token');
+    dispatch(logoutSuccess());
+    throw error;
+  }
+});
+
+
+
 
 
 export const registerUser = createAsyncThunk('auth/register', async (userData, { dispatch }) => {
@@ -59,7 +78,7 @@ export const registerUser = createAsyncThunk('auth/register', async (userData, {
     };
     const response = await axios.post(`${BACKEND_URL}/api/v1/register`, userData, config);
     const data = response.data;
-    await AsyncStorage.setItem('user', data.user);
+    await AsyncStorage.setItem('user', JSON.stringify(data.user));
     await AsyncStorage.setItem('token', data.token);
     dispatch(registerUserSuccess(data.user))
     return data.user;
@@ -144,11 +163,13 @@ const authSlice = createSlice({
     logoutSuccess(state) {
       state.isAuthenticated = false;
       state.loading = false;
-      state.isEmployee = false;
       state.user = null;
     },
     logoutFail(state, action) {
       state.error = action.payload;
+    },
+    verified(state) {
+      state.isAuthenticated = true;
     },
   },
 });
@@ -169,6 +190,7 @@ export const {
   clearErrors,
   logoutSuccess,
   logoutFail,
+  verified
 } = authSlice.actions;
 
 export default authSlice.reducer;

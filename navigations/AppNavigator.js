@@ -1,10 +1,11 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useIsFocused } from '@react-navigation/native';
 import HomeStack from './HomeStack';
+import AuthStack from './AuthStack';
 
 
 const Tab = createBottomTabNavigator();
@@ -36,6 +37,12 @@ const ProfileIcon = () => {
 };
 
 const AppNavigator = () => {
+  const dispatch = useDispatch();
+  const { isAuthenticated } = useSelector((state) => state.auth);
+  if (!isAuthenticated) {
+    return <AuthStack />;
+  }
+
 
 
   return (
