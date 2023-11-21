@@ -4,6 +4,10 @@ import UserScreen from '../screens/user';
 import AddUserScreen from '../screens/user/addUser';
 import EditUserScreen from '../screens/user/editUser';
 import UserInfo from '../screens/user/userInfo';
+import StoreScreen from '../screens/store/index';
+import AddStoreScreen from '../screens/store/addStore';
+import EditStoreScreen from '../screens/store/editStore';
+import StoreInfo from '../screens/store/storeInfo';
 
 
 const Stack = createStackNavigator();
@@ -17,7 +21,10 @@ const HomeStack = () => {
       <Stack.Screen name="AddUser" component={AddUserScreen} options={{ headerTitle: 'Add User' }} />
       <Stack.Screen name="EditUser" component={EditUserScreen} options={{ headerTitle: 'Edit User' }} />
       <Stack.Screen name="UserInfo" component={UserInfo} options={{ headerTitle: 'User Information' }} />
-      
+      <Stack.Screen name="Stores" component={StoreScreen} options={{ headerTitle: 'Stores' }} />
+      <Stack.Screen name="AddStore" component={AddStoreScreen} options={{ headerTitle: 'Add Store' }} />
+      <Stack.Screen name="EditStore" component={EditStoreScreen} options={{ headerTitle: 'Edit Store' }} />
+      <Stack.Screen name="StoreInfo" component={StoreInfo} options={{ headerTitle: 'Store Information' }} />
     </Stack.Navigator>
   );
 };
