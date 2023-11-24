@@ -8,9 +8,12 @@ import newStoreReducer from './store/newStoreSlice';
 import storeReducer from './store/storeSlice';
 import storeDetailsReducer from './store/storeDetailsSlice';
 import authenticationReducer from './auth/authenticationSlice';
-// import storeDashboardSlice from './storeDashboard/storeDashboardSlice';
 import allProductsReducer from './product/allProductsSlice';
 import newProductReducer from './product/newProductSlice';
+import allEmployeeReducer from './employee/allEmployeesSlice';
+import newEmployeeReducer from './employee/newEmployeeSlice';
+import employeeDetailsReducer from './employee/employeeDetailsSlice';
+import employeeReducer from './employee/employeeSlice';
 
 const rootReducer = combineReducers({
   allUsers: allUsersReducer,
@@ -23,7 +26,11 @@ const rootReducer = combineReducers({
   storeDetails: storeDetailsReducer,
   auth: authenticationReducer,
   allProducts : allProductsReducer,
-  newProduct : newProductReducer
+  newProduct : newProductReducer,
+  allEmployees : allEmployeeReducer,
+  newEmployee : newEmployeeReducer,
+  employeeDetails : employeeDetailsReducer,
+  employee : employeeReducer,
 });
 
 export default rootReducer

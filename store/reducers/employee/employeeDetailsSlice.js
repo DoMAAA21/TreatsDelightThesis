@@ -4,17 +4,17 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { BACKEND_URL } from '../../../shared/constants';
 
 const initialState = {
-  user: {},
+  employee: {},
   loading: false,
   error: null,
 };
 
-export const getUserDetails = createAsyncThunk('userDetails/getUserDetails', async (id, { dispatch }) => {
+export const getEmployeeDetails = createAsyncThunk('employeeDetails/getEmployeeDetails', async (id, { dispatch }) => {
   try {
-    dispatch(userDetailsRequest()); 
+    dispatch(employeeDetailsRequest()); 
     const token = await AsyncStorage.getItem('token');
     if (!token) {
-      dispatch(userDetailsFail('Login First'));
+      dispatch(employeeDetailsFail('Login First'));
       throw error.response.data.message;
     }
     const config = {
@@ -24,48 +24,48 @@ export const getUserDetails = createAsyncThunk('userDetails/getUserDetails', asy
       },
     };
     const { data } = await axios.get(
-      `${BACKEND_URL}/api/v1/admin/user/${id}`,config);
+      `${BACKEND_URL}/api/v1/admin/employee/${id}`,config);
 
-    dispatch(userDetailsSuccess(data.user));
-    return data.user;
+    dispatch(employeeDetailsSuccess(data.employee));
+    return data.employee;
   } catch (error) {
-    dispatch(userDetailsFail(error.response.data.message))
+    dispatch(employeeDetailsFail(error.response.data.message))
     throw error.response.data.message;
   }
 }
 );
 
-const userDetailsSlice = createSlice({
-  name: 'userDetails',
+const employeeDetailsSlice = createSlice({
+  name: 'employeeDetails',
   initialState,
   reducers: {
-    userDetailsRequest: (state) => {
+    employeeDetailsRequest: (state) => {
       state.loading = true;
     },
-    userDetailsSuccess: (state, action) => {
+    employeeDetailsSuccess: (state, action) => {
       state.loading = false;
-      state.user = action.payload;
+      state.employee = action.payload;
     },
-    userDetailsFail: (state, action) => {
+    employeeDetailsFail: (state, action) => {
       state.loading = false;
       state.error = action.payload;
     },
     clearErrors: (state) => {
       state.error = null;
     },
-    userUpdated: (state) => {
+    employeeUpdated: (state) => {
       state.error = null;
-      state.user = {};
+      state.employee = {};
     },
   },
 });
 
 export const {
-  userDetailsRequest,
-  userDetailsSuccess,
-  userDetailsFail,
+  employeeDetailsRequest,
+  employeeDetailsSuccess,
+  employeeDetailsFail,
   clearErrors,
-  userUpdated
-} = userDetailsSlice.actions;
+  employeeUpdated
+} = employeeDetailsSlice.actions;
 
-export default userDetailsSlice.reducer;
+export default employeeDetailsSlice.reducer;

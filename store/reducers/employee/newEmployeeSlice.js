@@ -7,16 +7,22 @@ const initialState = {
   loading: false,
   success: false,
   error: null,
-  users: [], 
+  employees: [], 
 };
 
-export const newUser = createAsyncThunk('newUser/newUser', async (userData, { dispatch }) => {
+export const newEmployee = createAsyncThunk('newEmployee/newEmployee', async (employeeData, { dispatch }) => {
   try {
-    dispatch(newUserRequest());
-
+    dispatch(newEmployeeRequest());
     const token = await AsyncStorage.getItem('token');
+    const user = await AsyncStorage.getItem('user');
+    const userCreds = JSON.parse(user);
+    const storeId = userCreds?.store?.storeId;
+    const storeName = userCreds?.store?.name;
+    employeeData.append("storeId", storeId);
+    employeeData.append("storeName", storeName);
+    
     if (!token) {
-      dispatch(newUserFail('Login First'));
+      dispatch(newEmployeeFail('Login First'));
       throw error.response.data.message;
     }
     const config = {
@@ -25,36 +31,36 @@ export const newUser = createAsyncThunk('newUser/newUser', async (userData, { di
         Authorization: `${token}`,
       },
     };
-    const { data } = await axios.post(`${BACKEND_URL}/api/v1/admin/user/new`, userData, config);
-    dispatch(newUserSuccess(data));
+    const { data } = await axios.post(`${BACKEND_URL}/api/v1/admin/employee/new`, employeeData, config);
+    dispatch(newEmployeeSuccess(data));
     return data;
   } catch (error) {
-    dispatch(newUserFail(error.response.data.message))
+    dispatch(newEmployeeFail(error.response.data.message))
     throw error.response.data.message;
   }
 });
 
 
-const newUserSlice = createSlice({
-  name: 'newUser',
+const newEmployeeSlice = createSlice({
+  name: 'newEmployee',
   initialState,
   reducers: {
     updateField: (state, action) => {
       state[action.payload.name] = action.payload.value;
     },
-    newUserRequest: (state) => {
+    newEmployeeRequest: (state) => {
       state.loading = true;
     },
-    newUserSuccess: (state, action) => {
+    newEmployeeSuccess: (state, action) => {
       state.loading = false;
       state.success = action.payload.success;
-      state.users = action.payload.user;
+      state.employees = action.payload.employee;
     },
-    newUserFail: (state, action) => {
+    newEmployeeFail: (state, action) => {
       state.loading = false;
       state.error = action.payload;
     },
-    newUserReset: (state) => {
+    newEmployeeReset: (state) => {
       state.success = false;
       state.error = null;
     },
@@ -65,15 +71,15 @@ const newUserSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(newUser.pending, (state) => {
+      .addCase(newEmployee.pending, (state) => {
         state.loading = true;
       })
-      .addCase(newUser.fulfilled, (state, action) => {
+      .addCase(newEmployee.fulfilled, (state, action) => {
         state.loading = false;
         state.success = action.payload.success;
-        state.users = action.payload.product;
+        state.employees = action.payload.product;
       })
-      .addCase(newUser.rejected, (state, action) => {
+      .addCase(newEmployee.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       });
@@ -82,10 +88,10 @@ const newUserSlice = createSlice({
 
 export const {
   updateField,
-  newUserRequest,
-  newUserSuccess,
-  newUserFail,
-  newUserReset,
-} = newUserSlice.actions;
+  newEmployeeRequest,
+  newEmployeeSuccess,
+  newEmployeeFail,
+  newEmployeeReset,
+} = newEmployeeSlice.actions;
 
-export default newUserSlice.reducer;
+export default newEmployeeSlice.reducer;

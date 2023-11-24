@@ -1,7 +1,7 @@
-import { createSlice,createAsyncThunk } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { BACKEND_URL } from '../../../constants/constants';
+import { BACKEND_URL } from '../../../shared/constants';
 
 const initialState = {
   loading: false,
@@ -11,29 +11,28 @@ const initialState = {
 };
 
 export const newStore = createAsyncThunk('newStore/newStore', async (storeData, { dispatch }) => {
-    try {
-      dispatch(newStoreRequest())
-      const token = await AsyncStorage.getItem('token');
-      
-      if (!token) {
-        dispatch(newStoreFail('Login First'));
-      }
-      const config = {
-        headers: {
-          Authorization: `${token}`,
-          "Content-Type": "multipart/form-data",
-        },
-      };
-      
-      const { data } = await axios.post(`${BACKEND_URL}/api/v1/admin/store/new`, storeData, config);
-       dispatch(newStoreSuccess(data.success))
-      return data;
-    } catch (error) 
-    {
-       dispatch(newStoreFail(error.response.data.message));
-      throw error.response.data.message;
+  try {
+    dispatch(newStoreRequest())
+    const token = await AsyncStorage.getItem('token');
+
+    if (!token) {
+      dispatch(newStoreFail('Login First'));
     }
-  });
+    const config = {
+      headers: {
+        Authorization: `${token}`,
+        "Content-Type": "multipart/form-data",
+      },
+    };
+
+    const { data } = await axios.post(`${BACKEND_URL}/api/v1/admin/store/new`, storeData, config);
+    dispatch(newStoreSuccess(data))
+    return data;
+  } catch (error) {
+    dispatch(newStoreFail(error.response.data.message));
+    throw error.response.data.message;
+  }
+});
 
 const newStoreSlice = createSlice({
   name: 'newStore',
