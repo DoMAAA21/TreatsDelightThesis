@@ -11,9 +11,20 @@ const initialState = {
 };
 
 export const newProduct = createAsyncThunk('newProduct/newProduct', async (productData, { dispatch }) => {
+    console.log(productData)
     try {
       dispatch(newProductRequest())
       const token = await AsyncStorage.getItem('token');
+      const user = await AsyncStorage.getItem('user');
+      const userCreds = JSON.parse(user);
+      const storeId = userCreds?.store?.storeId;
+      const storeName = userCreds?.store?.name;
+      productData.append("storeId", storeId);
+      productData.append("storeName", storeName);
+
+      if(!storeId || !storeName){
+        dispatch(newProductFail('Login First'));
+      }
       
       if (!token) {
         dispatch(newProductFail('Login First'));
@@ -26,7 +37,7 @@ export const newProduct = createAsyncThunk('newProduct/newProduct', async (produ
       };
       
       const { data } = await axios.post(`${BACKEND_URL}/api/v1/admin/product/new`, productData, config);
-       dispatch(newProductSuccess(data.success))
+       dispatch(newProductSuccess(data))
       return data;
     } catch (error) 
     {

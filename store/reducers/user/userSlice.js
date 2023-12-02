@@ -32,8 +32,7 @@ export const deleteUser = createAsyncThunk('user/deleteUser', async (id, {dispat
 });
 
 
-export const updateUser = createAsyncThunk('user/updateUser', async (payload, {dispatch}) => {
-  const { id, userData } = payload;
+export const updateUser = createAsyncThunk('user/updateUser', async ({ id, userData }, {dispatch}) => {
   try {
     dispatch(updateUserRequest())
     const token = await AsyncStorage.getItem('token');
@@ -43,7 +42,7 @@ export const updateUser = createAsyncThunk('user/updateUser', async (payload, {d
     }
     const config = {
       headers: {
-        'Content-Type': 'application/json',
+        'Content-Type': 'multipart/form-data',
         Authorization: `${token}`,
       },
     };

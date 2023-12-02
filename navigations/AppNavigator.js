@@ -1,49 +1,64 @@
-import React from 'react';
+import React,{ useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import Icon from 'react-native-vector-icons/FontAwesome';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import { useIsFocused } from '@react-navigation/native';
+import { useFocusEffect, useIsFocused } from '@react-navigation/native';
+import { verifyToken } from '../store/reducers/auth/authenticationSlice';
 import HomeStack from './HomeStack';
 import AuthStack from './AuthStack';
-
+import ProfileStack from './ProfileStack';
+import ShopStack from './ShopStack';
+import HomeDark from '../assets/svg/HomeDark.svg';
+import HomeWhite from '../assets/svg/HomeWhite.svg';
+import BagDark from '../assets/svg/BagDark.svg';
+import BagWhite from '../assets/svg/BagWhite.svg';
+import MessageDark from '../assets/svg/MessageDark.svg';
+import MessageWhite from '../assets/svg/MessageWhite.svg';
+import ProfileDark from '../assets/svg/ProfileDark.svg';
+import ProfileWhite from '../assets/svg/ProfileWhite.svg';
 
 const Tab = createBottomTabNavigator();
 
 
-const activeColor = 'black';
-const inactiveColor = 'gray';
-
 const HomeIcon = () => {
   const isFocused = useIsFocused();
   return (
-    <MaterialCommunityIcons
-      name="home"
-      size={35}
-      color={isFocused ? activeColor : inactiveColor}
-    />
+    isFocused ?  <HomeDark height={30} width={30} /> : <HomeWhite height={30} width={30}/>
   );
 };
 
+const ShopIcon = () => {
+  const isFocused = useIsFocused();
+  return (
+    isFocused ?  <BagDark height={30} width={30} /> : <BagWhite height={30} width={30}/>
+  );
+};
+const MessageIcon = () => {
+  const isFocused = useIsFocused();
+  return (
+    isFocused ?  <MessageDark height={30} width={30} /> : <MessageWhite height={30} width={30}/>
+  );
+};
 const ProfileIcon = () => {
   const isFocused = useIsFocused();
   return (
-    <Icon
-      name="user"
-      size={35}
-      color={isFocused ? activeColor : inactiveColor}
-    />
+    isFocused ?  <ProfileDark height={30} width={30} /> : <ProfileWhite height={30} width={30}/>
   );
 };
+
+
 
 const AppNavigator = () => {
   const dispatch = useDispatch();
   const { isAuthenticated } = useSelector((state) => state.auth);
+
+  useFocusEffect(
+    useCallback(()=>{
+      dispatch(verifyToken());
+    },[])
+  );
   if (!isAuthenticated) {
     return <AuthStack />;
   }
-
-
 
   return (
     <Tab.Navigator
@@ -65,6 +80,33 @@ const AppNavigator = () => {
           tabBarShowLabel: false,
           headerShown: false,
           tabBarIcon: () => <HomeIcon />,
+        }}
+      />
+      <Tab.Screen
+        name="Shop"
+        component={ShopStack}
+        options={{
+          tabBarShowLabel: false,
+          headerShown: false,
+          tabBarIcon: () => <ShopIcon />,
+        }}
+      />
+      <Tab.Screen
+        name="Message"
+        component={ProfileStack}
+        options={{
+          tabBarShowLabel: false,
+          headerShown: false,
+          tabBarIcon: () => <MessageIcon />,
+        }}
+      />
+      <Tab.Screen
+        name="Profile"
+        component={ProfileStack}
+        options={{
+          tabBarShowLabel: false,
+          headerShown: false,
+          tabBarIcon: () => <ProfileIcon />,
         }}
       />
     </Tab.Navigator>

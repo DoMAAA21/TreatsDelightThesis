@@ -1,12 +1,17 @@
-import React from 'react';
-import { View, StyleSheet, TouchableOpacity, Dimensions } from 'react-native';
-import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
-import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import React,{useState , useEffect} from 'react';
+import { View, StyleSheet, TouchableOpacity, Dimensions, Image, ScrollView } from 'react-native';
 import { Block, Text } from 'galio-framework';
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import UserGroup from '../../assets/svg/UserGroup.svg';
+import Store from '../../assets/svg/Store.svg';
+import Burger from '../../assets/svg/Burger.svg';
+import UserSquare from '../../assets/svg/UserSquare.svg';
+import Dish from '../../assets/svg/Dish.svg';
+import Package from '../../assets/svg/Package.svg';
+import Chart from '../../assets/svg/Chart.svg';
+// import UserGroup from '../../assets/UserGroup.svg';
+
 
 const screenHeight = Dimensions.get('window').height;
 const HomeScreen = () => {
@@ -57,26 +62,19 @@ const HomeScreen = () => {
             onPress={() => navigation.navigate('Users')}
           >
             <Block middle center style={styles.content}>
-              <FontAwesomeIcon
-                name='users'
-                size={40}
-                color='#405b43'
-              />
+              <UserGroup height={40} width={40}/>
               <Text size={16}>Users</Text>
             </Block>
+            
           </TouchableOpacity>
-
+        
           <TouchableOpacity
             key='Stores'
             style={styles.box}
             onPress={() => navigation.navigate('Stores')}
           >
             <Block middle center style={styles.content}>
-              <MaterialCommunityIcons
-                name='store'
-                size={40}
-                color='#405b43'
-              />
+              <Store height={40} width={40}/>
               <Text size={16}>Stores</Text>
             </Block>
           </TouchableOpacity>
@@ -87,11 +85,7 @@ const HomeScreen = () => {
             onPress={() => navigation.navigate('Products')}
           >
             <Block middle center style={styles.content}>
-              <MaterialCommunityIcons
-                name='food'
-                size={40}
-                color='#405b43'
-              />
+            <Burger height={40} width={40}/>
               <Text size={16}>Products</Text>
             </Block>
           </TouchableOpacity>
@@ -102,11 +96,7 @@ const HomeScreen = () => {
             onPress={() => navigation.navigate('Employees')}
           >
             <Block middle center style={styles.content}>
-              <FontAwesome5Icon
-                name='users-cog'
-                size={40}
-                color='#405b43'
-              />
+            <UserSquare height={40} width={40}/>
               <Text size={16}>Employees</Text>
             </Block>
           </TouchableOpacity>
@@ -117,12 +107,30 @@ const HomeScreen = () => {
             onPress={() => navigation.navigate('Meals')}
           >
             <Block middle center style={styles.content}>
-              <MaterialIcons
-                name='restaurant-menu'
-                size={40}
-                color='#405b43'
-              />
+            <Dish height={40} width={40}/>
               <Text size={16}>Meals</Text>
+            </Block>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            key='Stocks'
+            style={styles.box}
+            onPress={() => navigation.navigate('Stocks')}
+          >
+            <Block middle center style={styles.content}>
+            <Package height={40} width={40}/>
+              <Text size={16}>Stocks</Text>
+            </Block>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            key='Analytics'
+            style={styles.box}
+            onPress={() => navigation.navigate('Analytics')}
+          >
+            <Block middle center style={styles.content}>
+            <Chart height={40} width={40}/>
+              <Text size={16}>Analytics</Text>
             </Block>
           </TouchableOpacity>
         </View>
