@@ -33,6 +33,7 @@ const MyInput = ({ field, form, ...props }) => (
     />
 );
 
+
 const EditEmployeeScreen = () => {
     const dispatch = useDispatch();
     const navigation = useNavigation();
@@ -48,6 +49,8 @@ const EditEmployeeScreen = () => {
     const { employeeId } = route.params;
 
     useEffect(() => {
+        
+
         dispatch(getEmployeeDetails(employeeId))
             .then(() => {
                 setEmployeeDataFetched(true);
@@ -63,6 +66,8 @@ const EditEmployeeScreen = () => {
     // }, [dispatch, employeeId, ]);
     console.log(employee)
 
+
+
     useEffect(() => {
         if (employee && employee.avatar && employee.avatar.url) {
             setAvatarPreview(employee.avatar.url);
@@ -77,6 +82,8 @@ const EditEmployeeScreen = () => {
         religion: employee?.religion || '',
         store: employee.store ? `${employee.store.storeId}-${employee.store.name}` : '',
     };
+
+
 
     const selectImage = async () => {
         let result = await ImagePicker.launchImageLibraryAsync({
@@ -100,13 +107,17 @@ const EditEmployeeScreen = () => {
                 manipulatorOptions
             );
 
+
             if (manipulatedImage) {
                 const { uri } = manipulatedImage;
+
                 setAvatarPreview(uri);
                 setAvatar(uri);
             }
         }
     };
+
+
 
     const onSubmit = (values) => {
         const formData = new FormData();
@@ -126,6 +137,7 @@ const EditEmployeeScreen = () => {
         dispatch(updateEmployee({ id: employeeId, employeeData: formData }));
     };
 
+
     return (
         <ScrollView contentContainerStyle={styles.scrollViewContainer}>
             {employeeDataFetched ? (
@@ -135,6 +147,7 @@ const EditEmployeeScreen = () => {
                     onSubmit={onSubmit}
                 >
                     {(formik) => (
+
                         <View style={styles.container}>
                             <Block style={styles.formContainer}>
                                 <Field
@@ -194,7 +207,9 @@ const EditEmployeeScreen = () => {
                                     ) : null}
                                 </View>
 
+                    
                                 <View style={styles.imagePickerContainer}>
+
                                     {avatarPreview ? (
                                         <Image source={{ uri: avatarPreview }} style={styles.avatar} key={employee._id} />
                                     ) : null}
@@ -228,6 +243,7 @@ const EditEmployeeScreen = () => {
                                 </Button>
                             </Block>
                         </View>
+
                     )}
                 </Formik>
             ) : (

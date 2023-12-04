@@ -51,20 +51,20 @@ const AddUserScreen = () => {
     useEffect(() => {
         const fetchStores = () => {
             axios.get(`${BACKEND_URL}/api/v1/stores`)
-                .then((response) => {
-                    const storeData = response.data.stores;
-                    const options = storeData.map((store) => ({
-                        value: store._id,
-                        label: store.name,
-                    }));
-                    setStoreDropdown(options);
-                    setLoadingOptions(true);
-                })
-                .catch((error) => {
-                    console.error('Error fetching store data:', error);
-                    setLoadingOptions(false);
-                });
-        }
+                    .then((response) => {
+                        const storeData = response.data.stores;
+                        const options = storeData.map((store) => ({
+                            value: store._id,
+                            label: store.name,
+                        }));
+                        setStoreDropdown(options);
+                        setLoadingOptions(true);
+                    })
+                    .catch((error) => {
+                        console.error('Error fetching store data:', error);
+                        setLoadingOptions(false);
+                    });
+            }
         fetchStores();
         if (error) {
             errorMsg(error)
@@ -133,22 +133,22 @@ const AddUserScreen = () => {
 
         if (avatar) {
             formData.append("avatar", {
-                uri: avatar,
-                type: "image/jpeg",
-                name: "avatar.jpg",
+              uri: avatar,
+              type: "image/jpeg",
+              name: "avatar.jpg",
             });
         }
-
+      
         if (values.role === "Employee" && values.store) {
-            const selectedStoreValue = values.store.split('-');
-            const storeId = selectedStoreValue[0];
-            const storeName = selectedStoreValue[1];
-            formData.append("storeId", storeId);
-            formData.append("storeName", storeName);
+          const selectedStoreValue = values.store.split('-');
+          const storeId = selectedStoreValue[0];
+          const storeName = selectedStoreValue[1];
+          formData.append("storeId", storeId);
+          formData.append("storeName", storeName);
         }
         dispatch(newUser(formData));
-    };
-
+      };
+      
 
 
 

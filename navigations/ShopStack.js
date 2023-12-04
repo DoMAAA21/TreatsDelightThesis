@@ -1,11 +1,10 @@
 import { createStackNavigator } from '@react-navigation/stack';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { useNavigation } from '@react-navigation/native';
-import ShopScreen from '../screens/shop/index.js';
-import ItemInfo from '../screens/shop/itemInfo.js';
+import ShopScreen from '../screens/shop/index';
+import ItemInfo from '../screens/shop/itemInfo';
 import Cart from '../screens/shop/cart';
 import ReceiptScreen from '../screens/shop/receipt';
-
 
 const Stack = createStackNavigator();
 

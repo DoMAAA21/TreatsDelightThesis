@@ -8,10 +8,8 @@ import { Picker } from '@react-native-picker/picker';
 import { Formik, Field } from 'formik';
 import * as Yup from 'yup';
 import * as ImageManipulator from 'expo-image-manipulator';
-import axios from 'axios';
 import { newEmployeeReset } from '../../store/reducers/employee/newEmployeeSlice';
 import { newEmployee } from '../../store/reducers/employee/newEmployeeSlice';
-import { BACKEND_URL } from '../../shared/constants';
 import { religions } from '../../shared/inputs';
 import { successMsg, errorMsg } from '../../shared/toast';
 
@@ -47,23 +45,6 @@ const AddEmployeeScreen = () => {
     const [storeDropdown, setStoreDropdown] = useState([]);
     const [loadingOptions, setLoadingOptions] = useState(false);
     useEffect(() => {
-        const fetchStores = () => {
-            axios.get(`${BACKEND_URL}/api/v1/stores`)
-                .then((response) => {
-                    const storeData = response.data.stores;
-                    const options = storeData.map((store) => ({
-                        value: store._id,
-                        label: store.name,
-                    }));
-                    setStoreDropdown(options);
-                    setLoadingOptions(true);
-                })
-                .catch((error) => {
-                    console.error('Error fetching store data:', error);
-                    setLoadingOptions(false);
-                });
-        }
-        fetchStores();
         if (error) {
             errorMsg(error)
             dispatch(newEmployeeReset())
@@ -88,6 +69,7 @@ const AddEmployeeScreen = () => {
         if (!result.canceled) {
             const selectedAsset = result.assets[0];
 
+
             const manipulatorOptions = {
                 compress: 0.5,
                 format: ImageManipulator.SaveFormat.JPEG,
@@ -104,6 +86,8 @@ const AddEmployeeScreen = () => {
             }
         }
     };
+
+
 
     const initialValues = {
         fname: '',
@@ -124,13 +108,19 @@ const AddEmployeeScreen = () => {
 
         if (avatar) {
             formData.append("avatar", {
-                uri: avatar,
-                type: "image/jpeg",
-                name: "avatar.jpg",
+              uri: avatar,
+              type: "image/jpeg",
+              name: "avatar.jpg",
             });
         }
+      
         dispatch(newEmployee(formData));
-    };
+      };
+      
+
+
+
+
 
     return (
         <ScrollView contentContainerStyle={styles.scrollViewContainer}>
@@ -140,6 +130,7 @@ const AddEmployeeScreen = () => {
                 onSubmit={onSubmit}
             >
                 {(formik) => (
+
                     <View style={styles.container}>
                         <Block style={styles.formContainer}>
                             <Text h5 style={styles.formHeader}>
@@ -201,10 +192,14 @@ const AddEmployeeScreen = () => {
                                 ) : null}
                             </View>
 
+
+
+
                             <View style={styles.imagePickerContainer}>
                                 {avatarPreview ? (
                                     <Image source={{ uri: avatarPreview }} style={styles.avatar} />
                                 ) : null}
+
                                 <Button
                                     color="info"
                                     style={styles.imagePickerButton}
@@ -234,6 +229,7 @@ const AddEmployeeScreen = () => {
                             </Button>
                         </Block>
                     </View>
+
                 )}
             </Formik>
         </ScrollView>

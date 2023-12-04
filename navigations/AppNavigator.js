@@ -7,7 +7,7 @@ import HomeStack from './HomeStack';
 import AuthStack from './AuthStack';
 import ProfileStack from './ProfileStack';
 import ShopStack from './ShopStack';
-import HomeDark from '../assets/svg/HomeDark.svg';
+// import HomeDark from '../assets/svg/HomeDark';
 import HomeWhite from '../assets/svg/HomeWhite.svg';
 import BagDark from '../assets/svg/BagDark.svg';
 import BagWhite from '../assets/svg/BagWhite.svg';
@@ -15,6 +15,7 @@ import MessageDark from '../assets/svg/MessageDark.svg';
 import MessageWhite from '../assets/svg/MessageWhite.svg';
 import ProfileDark from '../assets/svg/ProfileDark.svg';
 import ProfileWhite from '../assets/svg/ProfileWhite.svg';
+import HomeDark from '../assets/svg/HomeDark.svg'
 
 const Tab = createBottomTabNavigator();
 

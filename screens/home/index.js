@@ -3,14 +3,13 @@ import { View, StyleSheet, TouchableOpacity, Dimensions, Image, ScrollView } fro
 import { Block, Text } from 'galio-framework';
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import UserGroup from '../../assets/svg/UserGroup.svg';
-import Store from '../../assets/svg/Store.svg';
-import Burger from '../../assets/svg/Burger.svg';
-import UserSquare from '../../assets/svg/UserSquare.svg';
-import Dish from '../../assets/svg/Dish.svg';
-import Package from '../../assets/svg/Package.svg';
-import Chart from '../../assets/svg/Chart.svg';
-// import UserGroup from '../../assets/UserGroup.svg';
+import UserGroup from '../../assets/svg/UserGroup';
+import Store from '../../assets/svg/Store';
+import Burger from '../../assets/svg/Burger';
+import UserSquare from '../../assets/svg/UserSquare';
+import Dish from '../../assets/svg/Dish';
+import Package from '../../assets/svg/Package';
+import Chart from '../../assets/svg/Chart';
 
 
 const screenHeight = Dimensions.get('window').height;
